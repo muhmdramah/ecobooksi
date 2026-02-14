@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "About a Category";
+}
+
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-primary bg-gradient text-white">
+        <h4 class="mb-0">Category Information</h4>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row mb-3">
+            <div class="col-4 fw-bold">
+                Category Name
+            </div>
+            <div class="col-8">
+                @Model.CategoryName
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-4 fw-bold">
+                Display Order
+            </div>
+            <div class="col-8">
+                @Model.DisplayOrder
+            </div>
+        </div>
+
+        <div class="row pt-3">
+            <div class="col-6 col-md-3">
+                <a asp-action="Edit"
+                   asp-route-categoryId="@Model.CategoryId"
+                   class="btn btn-warning form-control">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <a asp-action="Index"
+                   class="btn btn-secondary form-control">
+                    Back To List
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
