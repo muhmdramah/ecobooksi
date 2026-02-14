@@ -4,35 +4,43 @@
     ViewData["Title"] = "Delete Category";
 }
 
-
-<form asp-action="DeleteAndSave" asp-controller="Category" asp-route-categoryId="@Model.CategoryId" method="post">
-    <div class="p-3 mt-4">
-        <div class="row pb-2">
-            <h2 class="text-primary">Delete Category</h2>
-            <hr />
-        </div>
-
-        <div class="mb-3 row p-1">
-            <label asp-for="CategoryName" class="p-0">Category Name</label>
-            <input asp-for="CategoryName" type="text" disabled class="form-control" />
-        </div>
-
-        <div class="mb-3 row p-1">
-            <label asp-for="DisplayOrder" class="p-0">Display Order</label>
-            <input asp-for="DisplayOrder" type="number" disabled class="form-control" />
-        </div>
-
+<div class="card shadow border-0 mt-4">
+    <div class="card bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
-            <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-danger form-control">Delete</button>
-            </div>
-
-            <div class="col-6 col-md-3">
-                <a asp-action="Index" asp-controller="Category"
-                   class="btn btn-secondary form-control">
-                    Back To List
-                </a>
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Delete Category</h2>
             </div>
         </div>
     </div>
-</form>
+    <div class="card-body p-4">
+        <form asp-action="DeleteAndSave" asp-controller="Category" asp-route-categoryId="@Model.CategoryId" method="post">
+            <div class="p-3 mt-4">
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="CategoryName" type="text" class="form-control border-0 shadow" />
+                    <label asp-for="CategoryName" class="ms-2 disabled"></label>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="DisplayOrder" type="text" class="form-control border-0 shadow" />
+                    <label asp-for="DisplayOrder" class="ms-2 disabled"></label>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-danger form-control">Delete</button>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <a asp-action="Index" asp-controller="Category"
+                           class="btn btn-secondary form-control">
+                            Back To List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+

@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="ecobooksiWeb/ecobooksiWeb.csproj" />
+  <Project Path="ecobooksi.DataAccess/ecobooksi.DataAccess.csproj" Id="b5b3188e-2ab4-49f9-a80b-1893de27da8d" />
+  <Project Path="ecobooksi.Models/ecobooksi.Models.csproj" Id="6d5c1a32-344c-44ac-a51c-97a6e9937979" />
+  <Project Path="ecobooksi.Utilities/ecobooksi.Utilities.csproj" Id="092023c1-9c15-4c00-86b8-2ba9baa7a7e1" />
+  <Project Path="ecobooksiWeb/ecobooksi.Web.csproj" />
 </Solution>
