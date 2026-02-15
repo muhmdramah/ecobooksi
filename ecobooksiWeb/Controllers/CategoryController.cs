@@ -1,5 +1,5 @@
-﻿using ecobooksi.Models.Dtos;
-using ecobooksi.Web.Interfaces;
+﻿using ecobooksi.DataAccess.Interfaces;
+using ecobooksi.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ecobooksi.Web.Controllers
@@ -16,7 +16,7 @@ namespace ecobooksi.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var categoris = await _categoryRepository.GetCategoriesAsync();
+            var categoris = await _categoryRepository.GetAllAsync();
 
             if (ModelState.IsValid)
             {
@@ -29,7 +29,7 @@ namespace ecobooksi.Web.Controllers
         [HttpGet("{categoryId:int}")]
         public async Task<IActionResult> Details(int categoryId)
         {
-            var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            var category = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
 
             if (ModelState.IsValid)
             {
@@ -47,17 +47,14 @@ namespace ecobooksi.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAndSave(CreateCategoryDto createCategoryDto)
+        public async Task<IActionResult> CreateAndSave(Category category)
         {
-            if (createCategoryDto.CategoryName == createCategoryDto.DisplayOrder.ToString())
+            if (category.CategoryName == category.DisplayOrder.ToString())
                 ModelState.AddModelError("CategoryName", "Display Order cannot exactly match the Category Name!");
-
-            //if (createCategoryDto.CategoryName != null && createCategoryDto.CategoryName.ToLower() != "test")
-            //    ModelState.AddModelError("", "Category Name is invaild!");
 
             if (ModelState.IsValid)
             {
-                await _categoryRepository.CreateCategoryAsync(createCategoryDto);
+                _categoryRepository.Create(category);
 
                 // for notification purposes
                 TempData["success"] = "Category Created Successfully!";
@@ -76,36 +73,28 @@ namespace ecobooksi.Web.Controllers
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            var currentCategory = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
             if (currentCategory is null)
                 return NotFound();
 
-            // use auto mapper later 
-            var updateDto = new UpdateCategoryDto
-            {
-                CategoryId = currentCategory.CategoryId,
-                CategoryName = currentCategory.CategoryName,
-                DisplayOrder = currentCategory.DisplayOrder
-            };
-
-            return View("Edit", updateDto);
+            return View("Edit", currentCategory);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAndSave(int categoryId, UpdateCategoryDto updateCategoryDto)
+        public async Task<IActionResult> EditAndSave(Category category)
         {
             if (ModelState.IsValid)
             {
-                await _categoryRepository.UpdateCategoryAsync(categoryId, updateCategoryDto);
-                await _categoryRepository.Save();
+                _categoryRepository.Update(category);
+                _categoryRepository.Save();
 
                 // for notification purposes
                 TempData["success"] = "Category Updated Successfully!";
 
                 return RedirectToAction("Index");
             }
-            return View("Edit", updateCategoryDto);
+            return View("Edit", category);
         }
 
 
@@ -116,31 +105,24 @@ namespace ecobooksi.Web.Controllers
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            var currentCategory = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
             if (currentCategory is null)
                 return NotFound();
 
-            // use auto mapper later 
-            var deleteDto = new DeleteCategoryDto
-            {
-                CategoryId = currentCategory.CategoryId,
-                CategoryName = currentCategory.CategoryName,
-                DisplayOrder = currentCategory.DisplayOrder
-            };
 
-            return View("Delete", deleteDto);
+            return View("Delete", currentCategory);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteAndSave(int categoryId)
+        public async Task<IActionResult> DeleteAndSave(int categoryId)
         {
-            var currentCategory = _categoryRepository.GetCategoryByIdAsync(categoryId);
+            var currentCategory = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
 
             if (currentCategory is null)
                 return NotFound();
 
-            _categoryRepository.DeleteCategoryAsync(categoryId);
+            await _categoryRepository.Delete(currentCategory);
 
             // for notification purposes
             TempData["success"] = "Category Deleted Successfully!";

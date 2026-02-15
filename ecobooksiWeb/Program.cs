@@ -1,7 +1,7 @@
 using ecobooksi.DataAccess.Context;
+using ecobooksi.DataAccess.Interfaces;
+using ecobooksi.DataAccess.Repositories;
 using ecobooksi.Models.Models.Auth;
-using ecobooksi.Web.Interfaces;
-using ecobooksi.Web.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,8 +20,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
-
 
 var app = builder.Build();
 
