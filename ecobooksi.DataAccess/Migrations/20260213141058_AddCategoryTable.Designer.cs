@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ecobooksiWeb.Data;
+using ecobooksi.DataAccess.Context;
 
 #nullable disable
 
-namespace ecobooksiWeb.Migrations
+namespace ecobooksi.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260213144726_SeedingCategoryTable")]
-    partial class SeedingCategoryTable
+    [Migration("20260213141058_AddCategoryTable")]
+    partial class AddCategoryTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,26 +242,6 @@ namespace ecobooksiWeb.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = 1,
-                            CategoryName = "Cat One",
-                            DisplayOrder = 1
-                        },
-                        new
-                        {
-                            CategoryId = 2,
-                            CategoryName = "Cat Two",
-                            DisplayOrder = 2
-                        },
-                        new
-                        {
-                            CategoryId = 3,
-                            CategoryName = "Cat Three",
-                            DisplayOrder = 3
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

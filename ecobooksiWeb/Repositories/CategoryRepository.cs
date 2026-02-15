@@ -1,10 +1,10 @@
-﻿using ecobooksiWeb.Data;
-using ecobooksiWeb.Dtos;
-using ecobooksiWeb.Interfaces;
-using ecobooksiWeb.Models;
+﻿using ecobooksi.DataAccess.Context;
+using ecobooksi.Models.Dtos;
+using ecobooksi.Models.Models;
+using ecobooksi.Web.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ecobooksiWeb.Repositories
+namespace ecobooksi.Web.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {

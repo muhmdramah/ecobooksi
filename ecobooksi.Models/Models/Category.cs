@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ecobooksiWeb.Models
+namespace ecobooksi.Models.Models
 {
     public class Category
     {
@@ -10,6 +10,7 @@ namespace ecobooksiWeb.Models
 
         [DisplayName("Category Name")]
         [Required(ErrorMessage = "Category Name is required!")]
+        [StringLength(50, ErrorMessage = "Category name cannot exceed 50 characters")]
         public string CategoryName { get; set; }
 
         [DisplayName("Display Order")]

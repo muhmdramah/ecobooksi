@@ -1,8 +1,8 @@
-using System.Diagnostics;
-using ecobooksiWeb.Models;
+using ecobooksi.Models.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
-namespace ecobooksiWeb.Controllers
+namespace ecobooksi.Web.Controllers
 {
     public class HomeController : Controller
     {

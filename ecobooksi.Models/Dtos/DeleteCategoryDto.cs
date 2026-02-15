@@ -1,4 +1,4 @@
-﻿namespace ecobooksiWeb.Dtos
+﻿namespace ecobooksi.Models.Dtos
 {
     public record DeleteCategoryDto
     {

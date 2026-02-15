@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ecobooksiWeb.Data;
+using ecobooksi.DataAccess.Context;
 
 #nullable disable
 
-namespace ecobooksiWeb.Migrations
+namespace ecobooksi.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260213141058_AddCategoryTable")]
-    partial class AddCategoryTable
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +155,7 @@ namespace ecobooksiWeb.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ecobooksiWeb.Auth.ApplicationUser", b =>
+            modelBuilder.Entity("ecobooksi.Models.Models.Auth.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -223,7 +220,7 @@ namespace ecobooksiWeb.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ecobooksiWeb.Models.Category", b =>
+            modelBuilder.Entity("ecobooksi.Models.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -233,8 +230,8 @@ namespace ecobooksiWeb.Migrations
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
@@ -242,6 +239,26 @@ namespace ecobooksiWeb.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Cat One",
+                            DisplayOrder = 1
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Cat Two",
+                            DisplayOrder = 2
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Cat Three",
+                            DisplayOrder = 3
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -255,7 +272,7 @@ namespace ecobooksiWeb.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +281,7 @@ namespace ecobooksiWeb.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -279,7 +296,7 @@ namespace ecobooksiWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -288,7 +305,7 @@ namespace ecobooksiWeb.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

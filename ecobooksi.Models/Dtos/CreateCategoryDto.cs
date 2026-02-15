@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ecobooksiWeb.Dtos
+namespace ecobooksi.Models.Dtos
 {
-    public record UpdateCategoryDto
+    public record CreateCategoryDto
     {
-        public int CategoryId { get; set; }
-
         [DisplayName("Category Name")]
         [Required(ErrorMessage = "Category Name is required!")]
+        [StringLength(50, ErrorMessage = "Category name cannot exceed 50 characters")]
         public string CategoryName { get; set; }
 
         [DisplayName("Display Order")]

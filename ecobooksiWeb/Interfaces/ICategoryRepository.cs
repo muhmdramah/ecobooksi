@@ -1,7 +1,8 @@
-﻿using ecobooksiWeb.Dtos;
-using ecobooksiWeb.Models;
+﻿
+using ecobooksi.Models.Dtos;
+using ecobooksi.Models.Models;
 
-namespace ecobooksiWeb.Interfaces
+namespace ecobooksi.Web.Interfaces
 {
     public interface ICategoryRepository
     {

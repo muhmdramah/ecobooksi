@@ -1,4 +1,4 @@
-namespace ecobooksiWeb.Models
+namespace ecobooksi.Models.Models
 {
     public class ErrorViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ecobooksiWeb.Auth
+namespace ecobooksi.Models.Models.Auth
 {
     public class ApplicationUser : IdentityUser
     {

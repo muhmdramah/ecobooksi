@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace ecobooksiWeb.Migrations
+namespace ecobooksi.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class SeedingCategoryTable : Migration

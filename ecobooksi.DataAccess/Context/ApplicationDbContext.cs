@@ -1,9 +1,9 @@
-﻿using ecobooksiWeb.Auth;
-using ecobooksiWeb.Models;
+﻿using ecobooksi.Models.Models;
+using ecobooksi.Models.Models.Auth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ecobooksiWeb.Data
+namespace ecobooksi.DataAccess.Context
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -25,7 +25,7 @@ namespace ecobooksiWeb.Data
 
                 entity.Property(prop => prop.CategoryName)
                     .IsRequired()
-                    .HasMaxLength(16);
+                    .HasMaxLength(50);
 
                 entity.Property(prop => prop.DisplayOrder)
                     .IsRequired();

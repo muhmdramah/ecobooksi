@@ -1,8 +1,8 @@
-﻿using ecobooksiWeb.Dtos;
-using ecobooksiWeb.Interfaces;
+﻿using ecobooksi.Models.Dtos;
+using ecobooksi.Web.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ecobooksiWeb.Controllers
+namespace ecobooksi.Web.Controllers
 {
     public class CategoryController : Controller
     {

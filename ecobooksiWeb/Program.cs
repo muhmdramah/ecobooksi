@@ -1,7 +1,7 @@
-using ecobooksiWeb.Auth;
-using ecobooksiWeb.Data;
-using ecobooksiWeb.Interfaces;
-using ecobooksiWeb.Repositories;
+using ecobooksi.DataAccess.Context;
+using ecobooksi.Models.Models.Auth;
+using ecobooksi.Web.Interfaces;
+using ecobooksi.Web.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
