@@ -10,7 +10,6 @@ namespace ecobooksi.DataAccess.Interfaces
         public Task Delete(T entity);
         public Task DeleteRange(IEnumerable<T> entities);
 
-        //public Task UpdateAsync(T entity);
-        //public Task SaveAsync();
+        public void Update(T entity);
     }
 }

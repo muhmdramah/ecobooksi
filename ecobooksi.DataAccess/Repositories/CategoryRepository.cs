@@ -13,11 +13,6 @@ namespace ecobooksi.DataAccess.Repositories
             _context = context;
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
-
         public void Update(Category category)
         {
             _context.Categories.Update(category);

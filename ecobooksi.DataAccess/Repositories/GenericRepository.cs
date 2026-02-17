@@ -45,5 +45,11 @@ namespace ecobooksi.DataAccess.Repositories
             _context.Set<T>().RemoveRange(entities);
             _context.SaveChanges();
         }
+
+        public void Update(T entity)
+        {
+            _context.Update(entity);
+            _context.SaveChanges();
+        }
     }
 }

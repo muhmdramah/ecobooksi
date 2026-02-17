@@ -6,17 +6,19 @@ namespace ecobooksi.Web.Controllers
 {
     public class CategoryController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
         {
+            _unitOfWork = unitOfWork;
             _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var categoris = await _categoryRepository.GetAllAsync();
+            var categoris = await _unitOfWork.Categories.GetAllAsync();
 
             if (ModelState.IsValid)
             {
@@ -29,7 +31,7 @@ namespace ecobooksi.Web.Controllers
         [HttpGet("{categoryId:int}")]
         public async Task<IActionResult> Details(int categoryId)
         {
-            var category = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
+            var category = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
 
             if (ModelState.IsValid)
             {
@@ -54,7 +56,8 @@ namespace ecobooksi.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _categoryRepository.Create(category);
+                await _unitOfWork.Categories.Create(category);
+                _unitOfWork.Complete();
 
                 // for notification purposes
                 TempData["success"] = "Category Created Successfully!";
@@ -73,7 +76,8 @@ namespace ecobooksi.Web.Controllers
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
+
             if (currentCategory is null)
                 return NotFound();
 
@@ -86,8 +90,8 @@ namespace ecobooksi.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _categoryRepository.Update(category);
-                _categoryRepository.Save();
+                _unitOfWork.Categories.Update(category);
+                _unitOfWork.Complete();
 
                 // for notification purposes
                 TempData["success"] = "Category Updated Successfully!";
@@ -105,7 +109,7 @@ namespace ecobooksi.Web.Controllers
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
             if (currentCategory is null)
                 return NotFound();
 
@@ -117,12 +121,13 @@ namespace ecobooksi.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAndSave(int categoryId)
         {
-            var currentCategory = await _categoryRepository.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
 
             if (currentCategory is null)
                 return NotFound();
 
-            await _categoryRepository.Delete(currentCategory);
+            await _unitOfWork.Categories.Delete(currentCategory);
+            _unitOfWork.Complete();
 
             // for notification purposes
             TempData["success"] = "Category Deleted Successfully!";
