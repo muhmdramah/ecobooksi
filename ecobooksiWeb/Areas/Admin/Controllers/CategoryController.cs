@@ -2,8 +2,9 @@
 using ecobooksi.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ecobooksi.Web.Controllers
+namespace ecobooksi.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
