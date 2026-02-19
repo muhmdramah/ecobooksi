@@ -9,9 +9,12 @@ namespace ecobooksi.DataAccess.Repositories
         private readonly ApplicationDbContext _context;
         public IGenericRepository<Category> Categories { get; private set; }
 
+        public IProductRepository Products { get; private set; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
             Categories = new GenericRepository<Category>(context);
+            Products = new ProductRepository(context);
             _context = context;
         }
 
