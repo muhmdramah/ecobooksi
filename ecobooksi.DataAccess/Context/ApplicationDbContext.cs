@@ -49,8 +49,68 @@ namespace ecobooksi.DataAccess.Context
                     }
                 });
             });
+
+            builder.Entity<Product>(entity =>
+            {
+                entity.ToTable("Products");
+                entity.Property(prop => prop.Title)
+                    .IsRequired()
+                    .HasMaxLength(50);
+                entity.Property(prop => prop.Description)
+                    .IsRequired(false);
+                entity.Property(prop => prop.ISBN)
+                    .IsRequired();
+                entity.Property(prop => prop.Author)
+                    .IsRequired();
+                entity.Property(prop => prop.ListPrice)
+                    .IsRequired();
+                entity.Property(prop => prop.Price)
+                    .IsRequired();
+                entity.Property(prop => prop.PriceFifty)
+                    .IsRequired();
+                entity.Property(prop => prop.PriceHundred)
+                    .IsRequired();
+
+                entity.HasData(new List<Product>
+                {
+                    new Product{
+                        ProductId = 1,
+                        Title = "Book One",
+                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        ISBN = "1234567890",
+                        Author = "John Doe",
+                        ListPrice = 99.00,
+                        Price = 90.00,
+                        PriceFifty = 85.00,
+                        PriceHundred = 80.00,
+                    },
+                    new Product{
+                        ProductId = 2,
+                        Title = "Book Two",
+                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        ISBN = "1234567891",
+                        Author = "Jane Doe",
+                        ListPrice = 120.00,
+                        Price = 100.00,
+                        PriceFifty = 90.00,
+                        PriceHundred = 80.00,
+                    },
+                    new Product{
+                        ProductId = 3,
+                        Title = "Book Three",
+                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        ISBN = "1234567892",
+                        Author = "John Smith",
+                        ListPrice = 150.00,
+                        Price = 130.00,
+                        PriceFifty = 120.00,
+                        PriceHundred = 100.00,
+                    }
+                });
+            });
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }
