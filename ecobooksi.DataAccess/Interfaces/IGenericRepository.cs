@@ -6,9 +6,9 @@ namespace ecobooksi.DataAccess.Interfaces
     {
         public Task<ICollection<T>> GetAllAsync();
         public Task<T> GetAsync(Expression<Func<T, bool>> filter);
-        public Task Create(T entity);
-        public Task Delete(T entity);
-        public Task DeleteRange(IEnumerable<T> entities);
+        public Task CreateAsync(T entity);
+        public Task DeleteAsync(T entity);
+        public Task DeleteRangeAsync(IEnumerable<T> entities);
 
         public void Update(T entity);
     }

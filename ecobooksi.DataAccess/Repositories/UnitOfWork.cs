@@ -7,14 +7,14 @@ namespace ecobooksi.DataAccess.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-        public IGenericRepository<Category> Categories { get; private set; }
+        public IGenericRepository<Category> Category { get; private set; }
 
-        public IProductRepository Products { get; private set; }
+        public IProductRepository Product { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
-            Categories = new GenericRepository<Category>(context);
-            Products = new ProductRepository(context);
+            Category = new GenericRepository<Category>(context);
+            Product = new ProductRepository(context);
             _context = context;
         }
 
