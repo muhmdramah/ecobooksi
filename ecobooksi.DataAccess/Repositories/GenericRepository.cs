@@ -28,19 +28,19 @@ namespace ecobooksi.DataAccess.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task Create(T entity)
+        public async Task CreateAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
             _context.SaveChanges();
         }
 
-        public async Task Delete(T entity)
+        public async Task DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
             _context.SaveChanges();
         }
 
-        public async Task DeleteRange(IEnumerable<T> entities)
+        public async Task DeleteRangeAsync(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
             _context.SaveChanges();

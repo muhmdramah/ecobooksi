@@ -19,33 +19,34 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var categoris = await _unitOfWork.Categories.GetAllAsync();
+            var categoris = await _unitOfWork.Category.GetAllAsync();
 
             if (ModelState.IsValid)
             {
-                return View("Index", categoris);
+                return View(nameof(Index), categoris);
             }
 
-            return NotFound();
+            return NotFound(); 
+            // or return View(nameof(Index), new List<Category>()); to show empty list instead of 404 page
         }
 
-        [HttpGet("{categoryId:int}")]
+        [HttpGet("CategoryDetails/{categoryId:int}")]
         public async Task<IActionResult> Details(int categoryId)
         {
-            var category = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
+            var category = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
 
             if (ModelState.IsValid)
             {
-                return View("Details", category);
+                return View(nameof(Details), category);
             }
 
             return NotFound();
         }
 
-        [HttpGet("Create")]
-        public async Task<IActionResult> Create()
+        [HttpGet("CreateCategory")]
+        public IActionResult Create()
         {
-            return View("Create");
+            return View(nameof(Create));
         }
 
         [HttpPost]
@@ -57,83 +58,83 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                await _unitOfWork.Categories.Create(category);
+                await _unitOfWork.Category.CreateAsync(category);
                 _unitOfWork.Complete();
 
                 // for notification purposes
                 TempData["success"] = "Category Created Successfully!";
 
-                return RedirectToAction("Index", "Category");
+                return RedirectToAction(nameof(Index), "Category");
             }
 
-            return View("Create");
+            return View(nameof(Create));
         }
 
 
-        [HttpGet("Edit")]
+        [HttpGet("EditCategory")]
         public async Task<IActionResult> Edit(int categoryId)
         {
             if (categoryId == 0)
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
 
             if (currentCategory is null)
                 return NotFound();
 
-            return View("Edit", currentCategory);
+            return View(nameof(Edit), currentCategory);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAndSave(Category category)
+        public IActionResult EditAndSave(Category category)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Categories.Update(category);
+                _unitOfWork.Category.Update(category);
                 _unitOfWork.Complete();
 
                 // for notification purposes
                 TempData["success"] = "Category Updated Successfully!";
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
-            return View("Edit", category);
+            return View(nameof(Edit), category);
         }
 
 
-        [HttpGet("Delete")]
+        [HttpGet("DeleteCategory")]
         public async Task<IActionResult> Delete(int categoryId)
         {
             if (categoryId == 0)
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
             if (currentCategory is null)
                 return NotFound();
 
 
-            return View("Delete", currentCategory);
+            return View(nameof(Delete), currentCategory);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAndSave(int categoryId)
         {
-            var currentCategory = await _unitOfWork.Categories.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
 
             if (currentCategory is null)
                 return NotFound();
 
-            await _unitOfWork.Categories.Delete(currentCategory);
+            await _unitOfWork.Category.DeleteAsync(currentCategory);
             _unitOfWork.Complete();
 
             // for notification purposes
             TempData["success"] = "Category Deleted Successfully!";
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }
