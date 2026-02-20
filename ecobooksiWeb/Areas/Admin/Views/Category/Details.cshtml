@@ -35,6 +35,7 @@
         <div class="row pt-3">
             <div class="col-6 col-md-3">
                 <a asp-action="Edit"
+                   asp-controller="Category"
                    asp-route-categoryId="@Model.CategoryId"
                    class="btn btn-warning form-control">
                     <i class="bi bi-pencil-square"></i> Edit
@@ -43,6 +44,7 @@
 
             <div class="col-6 col-md-3">
                 <a asp-action="Index"
+                   asp-controller="Category"
                    class="btn btn-secondary form-control">
                     Back To List
                 </a>

@@ -30,10 +30,10 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         }
 
         // GET: ProductController/Details/5
-        [HttpGet("ProductDetils/{id:int}")]
-        public async Task<IActionResult> Details(int id)
+        [HttpGet("ProductDetils/{productId:int}")]
+        public async Task<IActionResult> Details(int productId)
         {
-            var product = await _unitOfWork.Product.GetAsync(product => product.ProductId == id);
+            var product = await _unitOfWork.Product.GetAsync(product => product.ProductId == productId);
             
             if(product is null)
                 return NotFound();
@@ -70,13 +70,13 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
 
         // GET: ProductController/Edit/5
         [HttpGet("id")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int productId)
         {
-            if (id is 0)
+            if (productId is 0)
                 return NotFound();
 
             var cuurentProduct = await _unitOfWork.Product
-                .GetAsync(product => product.ProductId == id);
+                .GetAsync(product => product.ProductId == productId);
 
             if(cuurentProduct is null)
                 return NotFound();
@@ -107,13 +107,13 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
 
         // GET: ProductController/Delete/5
         [HttpGet("DeleteProduct")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int productId)
         {
-            if(id is 0)
+            if(productId is 0)
                 return NotFound();
 
             var currentProduct = await _unitOfWork.Product
-                .GetAsync(product => product.ProductId == id);
+                .GetAsync(product => product.ProductId == productId);
 
             if(currentProduct is null)
                 return NotFound();  
@@ -124,15 +124,15 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         // POST: ProductController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteAndSave(int id)
+        public async Task<IActionResult> DeleteAndSave(int productId)
         {
-            if(id is 0)
+            if(productId is 0)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
                 var currentProduct = await _unitOfWork.Product
-                    .GetAsync(product => product.ProductId == id);
+                    .GetAsync(product => product.ProductId == productId);
 
                 if(currentProduct is null)
                     return NotFound();
