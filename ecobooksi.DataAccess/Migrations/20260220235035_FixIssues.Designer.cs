@@ -12,15 +12,15 @@ using ecobooksi.DataAccess.Context;
 namespace ecobooksi.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260213141058_AddCategoryTable")]
-    partial class AddCategoryTable
+    [Migration("20260220235035_FixIssues")]
+    partial class FixIssues
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.24")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -158,7 +158,7 @@ namespace ecobooksi.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ecobooksiWeb.Auth.ApplicationUser", b =>
+            modelBuilder.Entity("ecobooksi.Models.Models.Auth.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -223,7 +223,7 @@ namespace ecobooksi.DataAccess.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ecobooksiWeb.Models.Category", b =>
+            modelBuilder.Entity("ecobooksi.Models.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -233,8 +233,8 @@ namespace ecobooksi.DataAccess.Migrations
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
@@ -242,6 +242,113 @@ namespace ecobooksi.DataAccess.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Cat One",
+                            DisplayOrder = 1
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Cat Two",
+                            DisplayOrder = 2
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Cat Three",
+                            DisplayOrder = 3
+                        });
+                });
+
+            modelBuilder.Entity("ecobooksi.Models.Models.Product", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ListPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PriceFifty")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PriceHundred")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ProductId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            Author = "John Doe",
+                            CategoryId = 1,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            ISBN = "1234567890",
+                            ListPrice = 99.0,
+                            Price = 90.0,
+                            PriceFifty = 85.0,
+                            PriceHundred = 80.0,
+                            Title = "Book One"
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            Author = "Jane Doe",
+                            CategoryId = 1,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            ISBN = "1234567891",
+                            ListPrice = 120.0,
+                            Price = 100.0,
+                            PriceFifty = 90.0,
+                            PriceHundred = 80.0,
+                            Title = "Book Two"
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            Author = "John Smith",
+                            CategoryId = 1,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            ISBN = "1234567892",
+                            ListPrice = 150.0,
+                            Price = 130.0,
+                            PriceFifty = 120.0,
+                            PriceHundred = 100.0,
+                            Title = "Book Three"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -255,7 +362,7 @@ namespace ecobooksi.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +371,7 @@ namespace ecobooksi.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -279,7 +386,7 @@ namespace ecobooksi.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -288,11 +395,22 @@ namespace ecobooksi.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ecobooksiWeb.Auth.ApplicationUser", null)
+                    b.HasOne("ecobooksi.Models.Models.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ecobooksi.Models.Models.Product", b =>
+                {
+                    b.HasOne("ecobooksi.Models.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
