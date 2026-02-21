@@ -8,15 +8,17 @@
     <div class="card bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Create Product</h2>
+                <h2 class="text-white py-2">@(Model.Product.ProductId != 0 ? "Update" : "Create") Product</h2>
             </div>
         </div>
     </div>
     <div class="card-body p-4">
         @* enctype="multipart/form-data" is required for file uploads, and it should be included in the form
             tag. This allows the form to send files to the server when submitted. *@
-        <form asp-action="CreateAndSave" asp-controller="Product" method="post" class="row"
-            enctype="multipart/form-data">
+        <form method="post" class="row" enctype="multipart/form-data">
+
+            <input asp-for="Product.ProductId" hidden />
+            
             <div class="p-3">
                 <div class="form-floating py-2 col-12">
                     <input asp-for="Product.Title" type="text"  class="form-control border-0 shadow" />
@@ -84,7 +86,14 @@
 
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-primary form-control">Create</button>
+                        @if(Model.Product.ProductId != 0)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Update</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Create</button>
+                        }
                     </div>
 
                     <div class="col-6 col-md-3">
