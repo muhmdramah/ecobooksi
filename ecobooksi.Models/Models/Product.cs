@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -48,9 +49,13 @@ namespace ecobooksi.Models.Models
         [Required(ErrorMessage = "Price is required!")]
         public double PriceHundred { get; set; }
 
+        [ValidateNever]
+        public string ImageURL { get; set; }
 
-        [ForeignKey(nameof(Category))]
+
         public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        [ValidateNever]
         public Category Category { get; set; }
     }
 }

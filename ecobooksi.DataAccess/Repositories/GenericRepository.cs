@@ -13,11 +13,11 @@ namespace ecobooksi.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<ICollection<T>> GetAllAsync()
+        public  ICollection<T> GetAll()
         {
             IQueryable<T> query = _context.Set<T>();
 
-            return await query.ToListAsync();
+            return  query.ToList();
         }
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
