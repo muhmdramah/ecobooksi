@@ -17,9 +17,9 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var categoris = await _unitOfWork.Category.GetAllAsync();
+            var categoris = _unitOfWork.Category.GetAll();
 
             if (ModelState.IsValid)
             {

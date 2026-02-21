@@ -83,7 +83,8 @@ namespace ecobooksi.DataAccess.Context
                         Price = 90.00,
                         PriceFifty = 85.00,
                         PriceHundred = 80.00,
-                        CategoryId = 1
+                        CategoryId = 1,
+                        ImageURL = ""
                     },
                     new Product{
                         ProductId = 2,
@@ -95,7 +96,8 @@ namespace ecobooksi.DataAccess.Context
                         Price = 100.00,
                         PriceFifty = 90.00,
                         PriceHundred = 80.00,
-                        CategoryId = 1
+                        CategoryId = 1,
+                        ImageURL = ""
                     },
                     new Product{
                         ProductId = 3,
@@ -107,7 +109,8 @@ namespace ecobooksi.DataAccess.Context
                         Price = 130.00,
                         PriceFifty = 120.00,
                         PriceHundred = 100.00,
-                        CategoryId = 1
+                        CategoryId = 1,
+                        ImageURL = ""
                     }
                 });
             });

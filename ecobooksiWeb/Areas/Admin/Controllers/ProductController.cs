@@ -2,6 +2,9 @@
 using ecobooksi.Models.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ecobooksi.Models.View_Models;
 
 namespace ecobooksi.Web.Areas.Admin.Controllers
 {
@@ -19,11 +22,12 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
 
         // GET: ProductController
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if(ModelState.IsValid)
             {
-                var products = await  _unitOfWork.Product.GetAllAsync();
+                var products = _unitOfWork.Product.GetAll();
+
                 return View(nameof(Index), products);
             }
             return NotFound();
@@ -45,27 +49,57 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         [HttpGet("CreateProduct")]
         public IActionResult Create()
         {
-            return View(nameof(Create));
+            //IEnumerable<SelectListItem> categoryList = _unitOfWork.Category.GetAll()
+            //    .Select(category => new SelectListItem
+            //    {
+            //        Value = category.CategoryId.ToString(),
+            //        Text = category.CategoryName
+            //    });
+
+            //ViewBag.CategoryList = categoryList; 
+            //ViewData["CategoryList"] = categoryList;
+
+            ProductViewModel viewModel = new ProductViewModel()
+            {
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll()
+                    .Select(category => new SelectListItem
+                    {
+                        Value = category.CategoryId.ToString(),
+                        Text = category.CategoryName
+                    })
+            };
+
+            return View(nameof(Create), viewModel);
         }
 
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAndSave(Product product)
+        public async Task<IActionResult> CreateAndSave(ProductViewModel productViewModel)
         {
-            if (product.Title is null)
-                ModelState.AddModelError("Title", "Product title must be not null!");
-            
             if (ModelState.IsValid)
             {
-                await _unitOfWork.Product.CreateAsync(product);
+                await _unitOfWork.Product.CreateAsync(productViewModel.Product);
                 _unitOfWork.Complete();
 
                 TempData["success"] = "Product Created Successfully!";
 
                 return RedirectToAction(nameof(Index));
             }
-            return View(nameof(Create), product);
+            else
+            {
+                // when the model state is invalid,
+                // we need to repopulate the CategoryList for the view to work properly
+                productViewModel.CategoryList = _unitOfWork.Category.GetAll()
+                   .Select(category => new SelectListItem
+                   {
+                       Value = category.CategoryId.ToString(),
+                       Text = category.CategoryName
+                   });
+                
+                return View(nameof(Create), productViewModel);
+            }
         }
 
         // GET: ProductController/Edit/5
