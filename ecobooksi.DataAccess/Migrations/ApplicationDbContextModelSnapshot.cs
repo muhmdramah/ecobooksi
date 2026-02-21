@@ -273,6 +273,9 @@ namespace ecobooksi.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -299,6 +302,8 @@ namespace ecobooksi.DataAccess.Migrations
 
                     b.HasKey("ProductId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products", (string)null);
 
                     b.HasData(
@@ -306,6 +311,7 @@ namespace ecobooksi.DataAccess.Migrations
                         {
                             ProductId = 1,
                             Author = "John Doe",
+                            CategoryId = 1,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             ISBN = "1234567890",
                             ListPrice = 99.0,
@@ -318,6 +324,7 @@ namespace ecobooksi.DataAccess.Migrations
                         {
                             ProductId = 2,
                             Author = "Jane Doe",
+                            CategoryId = 1,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             ISBN = "1234567891",
                             ListPrice = 120.0,
@@ -330,6 +337,7 @@ namespace ecobooksi.DataAccess.Migrations
                         {
                             ProductId = 3,
                             Author = "John Smith",
+                            CategoryId = 1,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             ISBN = "1234567892",
                             ListPrice = 150.0,
@@ -389,6 +397,17 @@ namespace ecobooksi.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ecobooksi.Models.Models.Product", b =>
+                {
+                    b.HasOne("ecobooksi.Models.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
