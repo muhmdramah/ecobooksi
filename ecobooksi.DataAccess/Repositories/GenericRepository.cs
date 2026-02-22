@@ -20,12 +20,12 @@ namespace ecobooksi.DataAccess.Repositories
             return  query.ToList();
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = _context.Set<T>();
             query = query.Where(filter);
 
-            return await query.FirstOrDefaultAsync();
+            return query.FirstOrDefault();
         }
 
         public async Task CreateAsync(T entity)

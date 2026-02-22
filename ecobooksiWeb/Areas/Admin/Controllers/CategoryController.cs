@@ -31,9 +31,9 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         }
 
         [HttpGet("CategoryDetails/{categoryId:int}")]
-        public async Task<IActionResult> Details(int categoryId)
+        public IActionResult Details(int categoryId)
         {
-            var category = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
+            var category = _unitOfWork.Category.Get(category => category.CategoryId == categoryId);
 
             if (ModelState.IsValid)
             {
@@ -72,13 +72,13 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
 
 
         [HttpGet("EditCategory")]
-        public async Task<IActionResult> Edit(int categoryId)
+        public IActionResult Edit(int categoryId)
         {
             if (categoryId == 0)
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory =  _unitOfWork.Category.Get(category => category.CategoryId == categoryId);
 
             if (currentCategory is null)
                 return NotFound();
@@ -105,13 +105,13 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
 
 
         [HttpGet("DeleteCategory")]
-        public async Task<IActionResult> Delete(int categoryId)
+        public IActionResult Delete(int categoryId)
         {
             if (categoryId == 0)
                 return NotFound();
 
             // send the currrent category with the opend view 
-            var currentCategory = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = _unitOfWork.Category.Get(category => category.CategoryId == categoryId);
             if (currentCategory is null)
                 return NotFound();
 
@@ -123,7 +123,7 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAndSave(int categoryId)
         {
-            var currentCategory = await _unitOfWork.Category.GetAsync(category => category.CategoryId == categoryId);
+            var currentCategory = _unitOfWork.Category.Get(category => category.CategoryId == categoryId);
 
             if (currentCategory is null)
                 return NotFound();

@@ -16,7 +16,7 @@
             <div class="col-6">
             </div>
             <div class="col-6 text-end">
-                <a asp-action="Create"
+                <a asp-action="Upsert"
                    asp-controller="Product"
                    class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> Create A New Product
@@ -33,7 +33,7 @@
                     <th>List Price</th>
                     <th>Price</th>
                     <th>Price Fifty</th>
-                    <th>Price Hundered</th>
+                    <th>Price Hundred</th>
                 </tr>
             </thead>
 
@@ -42,7 +42,7 @@
                 {
                     <tr>
                         <td>@product.Title</td>
-                        <td>@product.Description</td>
+                        <td>@Html.Raw(product.Description)</td>
                         <td>@product.ISBN</td>
                         <td>@product.Author</td>
                         <td>@product.ListPrice</td>
@@ -56,7 +56,7 @@
                                     <i class="bi bi-info-circle"></i> Details
                                 </a>
 
-                                <a asp-action="Edit" asp-controller="Product"
+                                <a asp-action="Upsert" asp-controller="Product"
                                    asp-route-productId="@product.ProductId" class="btn btn-primary mx-2">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>

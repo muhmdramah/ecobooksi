@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ecobooksi.Models\ecobooksi.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product\" />
+  </ItemGroup>
+
 </Project>
