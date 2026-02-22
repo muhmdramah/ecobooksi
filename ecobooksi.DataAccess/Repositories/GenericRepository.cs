@@ -13,17 +13,37 @@ namespace ecobooksi.DataAccess.Repositories
             _context = context;
         }
 
-        public  ICollection<T> GetAll()
+        public  ICollection<T> GetAll(string? includeProperty = null)
         {
             IQueryable<T> query = _context.Set<T>();
+
+            //query = query.Include(includeProperty);
+
+            if (!string.IsNullOrEmpty(includeProperty))
+            {
+                foreach (var property in includeProperty
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
 
             return  query.ToList();
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperty = null)
         {
             IQueryable<T> query = _context.Set<T>();
             query = query.Where(filter);
+
+            if (!string.IsNullOrEmpty(includeProperty))
+            {
+                foreach (var property in includeProperty
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
 
             return query.FirstOrDefault();
         }
