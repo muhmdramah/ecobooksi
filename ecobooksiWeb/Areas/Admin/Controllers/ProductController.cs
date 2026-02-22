@@ -122,15 +122,35 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     var productPath = Path.Combine(wwwRootPath, @"images\product");
 
+                    // in case of updating existing product, we need to check if there is an old image and delete it before saving the new one
+                    // if old image exists, delete it
+                    if (!string.IsNullOrEmpty(productViewModel.Product.ImageURL))
+                    {
+                        // delete the old image if it exists
+                        var oldImagePath = Path.Combine(wwwRootPath, 
+                            productViewModel.Product.ImageURL.TrimStart('\\', '/'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                            System.IO.File.Delete(oldImagePath);
+                    };
+
                     using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
 
-                    productViewModel.Product.ImageURL = @"\images\product" + fileName;
+                    productViewModel.Product.ImageURL = @"\images\product\" + fileName;
                 }
 
-                await _unitOfWork.Product.CreateAsync(productViewModel.Product);
+                if(productViewModel.Product.ProductId == 0)
+                {
+                    await _productRepository.CreateAsync(productViewModel.Product);
+                }
+                else
+                {
+                    _productRepository.Update(productViewModel.Product);
+                }
+
                 _unitOfWork.Complete();
 
                 TempData["success"] = "Product Created Successfully!";

@@ -1,11 +1,6 @@
 ﻿using ecobooksi.DataAccess.Context;
 using ecobooksi.DataAccess.Interfaces;
 using ecobooksi.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ecobooksi.DataAccess.Repositories
 {
@@ -19,7 +14,25 @@ namespace ecobooksi.DataAccess.Repositories
         }
         public void Update(Product product)
         {
-            _context.Products.Update(product);
+            var currentProduct = _context.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
+
+            if(currentProduct != null)
+            {
+                currentProduct.Title = product.Title;
+                currentProduct.Description = product.Description;
+                currentProduct.ISBN = product.ISBN;
+                currentProduct.Author = product.Author;
+                currentProduct.ListPrice = product.ListPrice;
+                currentProduct.Price = product.Price;
+                currentProduct.PriceFifty = product.PriceFifty;
+                currentProduct.PriceHundred = product.PriceHundred;
+                currentProduct.CategoryId = product.CategoryId;
+
+                if(product.ImageURL != null)
+                {
+                    currentProduct.ImageURL = product.ImageURL;
+                }
+            }
         }
     }
 }
