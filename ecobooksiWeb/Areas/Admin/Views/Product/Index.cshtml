@@ -34,6 +34,7 @@
                     <th>Price</th>
                     <th>Price Fifty</th>
                     <th>Price Hundred</th>
+                    <th>Category</th>
                 </tr>
             </thead>
 
@@ -49,6 +50,7 @@
                         <td>@product.Price</td>
                         <td>@product.PriceFifty</td>
                         <td>@product.PriceHundred</td>
+                        <td>@product.Category.CategoryName</td>
                         <td>
                             <div class="w-75 btn btn-group" role="group">
                                 <a asp-action="Details" asp-controller="Product"

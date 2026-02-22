@@ -29,7 +29,7 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         {
             if(ModelState.IsValid)
             {
-                var products = _unitOfWork.Product.GetAll();
+                var products = _unitOfWork.Product.GetAll("Category");
 
                 return View(nameof(Index), products);
             }
@@ -40,7 +40,8 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         [HttpGet("ProductDetils/{productId:int}")]
         public IActionResult Details(int productId)
         {
-            var product = _unitOfWork.Product.Get(product => product.ProductId == productId);
+            var product = _unitOfWork.Product.Get(product => product.ProductId == productId,
+                "Category");
             
             if(product is null)
                 return NotFound();

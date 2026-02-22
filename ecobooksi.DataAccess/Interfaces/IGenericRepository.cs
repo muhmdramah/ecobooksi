@@ -4,8 +4,8 @@ namespace ecobooksi.DataAccess.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        public ICollection<T> GetAll();
-        public T Get(Expression<Func<T, bool>> filter);
+        public ICollection<T> GetAll(string? includeProperty = null);
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperty = null);
         public Task CreateAsync(T entity);
         public Task DeleteAsync(T entity);
         public Task DeleteRangeAsync(IEnumerable<T> entities);
