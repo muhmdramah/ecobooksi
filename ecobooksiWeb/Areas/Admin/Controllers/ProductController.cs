@@ -13,11 +13,14 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _productRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork, IProductRepository productRepository)
+        public ProductController(IUnitOfWork unitOfWork, IProductRepository productRepository,
+            IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _productRepository = productRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: ProductController
@@ -109,8 +112,24 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(ProductViewModel productViewModel, IFormFile? file)
         {
+
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (file is not null)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    productViewModel.Product.ImageURL = @"\images\product" + fileName;
+                }
+
                 await _unitOfWork.Product.CreateAsync(productViewModel.Product);
                 _unitOfWork.Complete();
 
