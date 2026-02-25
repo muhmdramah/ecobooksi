@@ -1,4 +1,5 @@
 ﻿using ecobooksi.Models.Models;
+using ecobooksi.Models.Models.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -119,5 +120,6 @@ namespace ecobooksi.DataAccess.Context
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ApplicationUser> applicationUsers { get; set; }
     }
 }
