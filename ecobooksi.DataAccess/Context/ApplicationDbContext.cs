@@ -17,6 +17,7 @@ namespace ecobooksi.DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            // the keys of identity tables are mapped here, so i must write this line
             base.OnModelCreating(builder);
 
             builder.Entity<Category>(entity =>
