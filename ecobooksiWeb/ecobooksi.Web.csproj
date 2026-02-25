@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ecobooksi.DataAccess\ecobooksi.DataAccess.csproj" />
     <ProjectReference Include="..\ecobooksi.Models\ecobooksi.Models.csproj" />
+    <ProjectReference Include="..\ecobooksi.Utilities\ecobooksi.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
