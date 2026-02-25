@@ -1,9 +1,12 @@
 ﻿using ecobooksi.DataAccess.Interfaces;
 using ecobooksi.Models.Models;
+using ecobooksi.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ecobooksi.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = StaticDetails.Role_Admin)]
     [Area("Admin")]
     public class CategoryController : Controller
     {

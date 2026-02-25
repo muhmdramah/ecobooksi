@@ -16,6 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
+
 // Use AddIdentity instead of AddDefaultIdentity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -36,6 +38,15 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+
+
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.LoginPath = $"/Identity/Account/Login";
+    option.LogoutPath = $"/Identity/Account/Logout";
+    option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
 
 // If you need Identity UI (Razor Pages), add this
 builder.Services.AddRazorPages();

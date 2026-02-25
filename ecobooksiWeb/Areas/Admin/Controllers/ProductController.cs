@@ -1,13 +1,16 @@
 ﻿    using ecobooksi.DataAccess.Interfaces;
     using ecobooksi.Models.Models;
+    using ecobooksi.Models.View_Models;
+using ecobooksi.Utilities;
+using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using ecobooksi.Models.View_Models;
+    using System.Linq;
 
     namespace ecobooksi.Web.Areas.Admin.Controllers
     {
+        [Authorize(Roles = StaticDetails.Role_Admin)]
         [Area("Admin")]
         public class ProductController : Controller
         {
