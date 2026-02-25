@@ -24,7 +24,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = true;
+
     options.SignIn.RequireConfirmedAccount = false;
+
+    options.SignIn.RequireConfirmedAccount = false; 
+    options.SignIn.RequireConfirmedEmail = false; 
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
