@@ -1,7 +1,6 @@
 using ecobooksi.DataAccess.Context;
 using ecobooksi.DataAccess.Interfaces;
 using ecobooksi.DataAccess.Repositories;
-using ecobooksi.Models.Models.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 // Use AddIdentity instead of AddDefaultIdentity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     // Configure Identity options here
     options.SignIn.RequireConfirmedAccount = true;
@@ -25,6 +24,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = true;
+    options.SignIn.RequireConfirmedAccount = false;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
