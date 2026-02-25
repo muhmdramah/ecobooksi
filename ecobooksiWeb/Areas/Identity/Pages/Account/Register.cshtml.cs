@@ -35,7 +35,7 @@ namespace ecobooksi.Web.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender = null)
         {
             _userManager = userManager;
             _userStore = userStore;
