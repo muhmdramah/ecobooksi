@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 namespace ecobooksi.Models.Models.Auth
 {
@@ -6,7 +7,6 @@ namespace ecobooksi.Models.Models.Auth
     {
         [Required]
         public string Name { get; set; }
-
 
         public string? StreetAddress { get; set; }
         public string? City { get; set; }
