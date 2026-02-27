@@ -2,6 +2,7 @@
 using ecobooksi.Models.Models;
 using ecobooksi.Models.View_Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ecobooksi.Web.Areas.Admin.Controllers
@@ -70,22 +71,30 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
             return View(company);
         }
 
-        public IActionResult Delete(int companyId)
-        { 
-            var currentCompany = _unitOfWork.Company
-                .Get(company => company.CompanyId == companyId);
+        #region API Calls
 
-            if(currentCompany is null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var products = _unitOfWork.Product.GetAll("Category");
+            return Json(new { data = products });
+        }
 
-            _unitOfWork.Company.DeleteAsync(currentCompany);
+        [HttpDelete]
+        public IActionResult Delete(int productId)
+        {
+            var currentProduct = _unitOfWork.Product
+                .Get(product => product.ProductId == productId);
+
+            if (currentProduct is null)
+                return Json(new { success = false, message = "Error while deleting" });
+
+
+            _unitOfWork.Product.DeleteAsync(currentProduct);
             _unitOfWork.Complete();
 
-            TempData["success"] = "Company Created Successfully!";
-
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true, message = "Product Deleted Successfully!" });
         }
+        #endregion
     }
 }
