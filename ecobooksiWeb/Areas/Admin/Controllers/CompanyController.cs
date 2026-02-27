@@ -4,6 +4,7 @@ using ecobooksi.Models.View_Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ecobooksi.Web.Areas.Admin.Controllers
 {
@@ -27,7 +28,6 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
             return View(companies);
         }
 
-        [HttpGet("Details")]
         public IActionResult Details(int companyId)
         {
             var company = _unitOfWork.Company.Get(company => company.CompanyId == companyId);
@@ -39,10 +39,13 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         {
             if (companyId is null || companyId == 0)
             {
-                return View();
+                // Create new product
+                return View(new Company());
             }
             else
             {
+                // Update existing product
+
                 var currentCompany = _unitOfWork.Company
                     .Get(company => company.CompanyId == companyId);
 
@@ -76,24 +79,24 @@ namespace ecobooksi.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var products = _unitOfWork.Product.GetAll("Category");
-            return Json(new { data = products });
+            var companies = _unitOfWork.Company.GetAll();
+            return Json(new { data = companies });
         }
 
         [HttpDelete]
-        public IActionResult Delete(int productId)
+        public IActionResult Delete(int companyId)
         {
-            var currentProduct = _unitOfWork.Product
-                .Get(product => product.ProductId == productId);
+            var currentCompany = _unitOfWork.Company
+                .Get(company => company.CompanyId == companyId);
 
-            if (currentProduct is null)
+            if (currentCompany is null)
                 return Json(new { success = false, message = "Error while deleting" });
 
 
-            _unitOfWork.Product.DeleteAsync(currentProduct);
+            _unitOfWork.Company.DeleteAsync(currentCompany);
             _unitOfWork.Complete();
 
-            return Json(new { success = true, message = "Product Deleted Successfully!" });
+            return Json(new { success = true, message = "Company Deleted Successfully!" });
         }
         #endregion
     }
