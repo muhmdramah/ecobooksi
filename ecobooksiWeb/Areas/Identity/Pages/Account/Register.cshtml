@@ -100,7 +100,7 @@
                             </div>
 
                             <div class="form-floating mb-4 mt-3">
-                                <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select">
+                                <select asp-for="Input.CompanyId" style="display:none;" asp-items="@Model.Input.CompanyList" class="form-select">
                                     <option disabled selected>Do you want select a Company?</option>
                                 </select>
                             </div>
@@ -124,4 +124,19 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}
+
+    <script>
+        $(document).ready(function (){
+            $('#Input_Role').change(function() {
+                var selection = $('#Input_Role Option:Selected').text();
+
+                if(selection == 'Company'){
+                    $('#Input_CompanyId').show();
+                }
+                else{
+                    $('#Input_CompanyId').hide();
+                }
+            })
+        })
+    </script>
+}   
