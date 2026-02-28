@@ -8,6 +8,7 @@ namespace ecobooksi.DataAccess.Interfaces
         public IProductRepository Product { get; }
         public ICompanyRepository Company { get; }
         public IShoppingCartRepository ShoppingCart { get; }
+        public IApplicationUserRepository ApplicationUser { get; }
         int Complete();
     }
 }
