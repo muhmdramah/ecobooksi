@@ -26,5 +26,8 @@ namespace ecobooksi.Models.Models
         public string ApplicationUserId { get; set; }
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
+
+        [NotMapped]
+        public double Price { get; set; }
     }
 }
