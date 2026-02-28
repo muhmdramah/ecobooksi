@@ -32,9 +32,9 @@ using Microsoft.AspNetCore.Authorization;
             {
                 if(ModelState.IsValid)
                 {
-                    var products = _unitOfWork.Product.GetAll("Category");
+                    var products = _unitOfWork.Product.GetAll(includeProperty: "Category");
 
-                    return View(nameof(Index), products);
+                return View(nameof(Index), products);
                 }
                 return NotFound();
             }
@@ -260,7 +260,7 @@ using Microsoft.AspNetCore.Authorization;
             [HttpGet]
             public IActionResult GetAll()
             {
-                var products = _unitOfWork.Product.GetAll("Category");
+            var products = _unitOfWork.Product.GetAll(includeProperty: "Category");
                 return Json(new { data = products });
             }
 

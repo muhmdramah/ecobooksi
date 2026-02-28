@@ -13,9 +13,14 @@ namespace ecobooksi.DataAccess.Repositories
             _context = context;
         }
 
-        public  ICollection<T> GetAll(string? includeProperty = null)
+        public  ICollection<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperty = null)
         {
             IQueryable<T> query = _context.Set<T>();
+
+            if(filter is not null)
+            {
+                query = query.Where(filter);
+            }
 
             //query = query.Include(includeProperty);
 

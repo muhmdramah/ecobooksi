@@ -21,7 +21,7 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> products = _unitOfWork.Product.GetAll("Category");
+            IEnumerable<Product> products = _unitOfWork.Product.GetAll(includeProperty: "Category");
             return View(products);
         }
 
