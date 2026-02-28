@@ -43,6 +43,11 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
             return View(ShoppingCartViewModel);
         }
 
+        public IActionResult Summary()
+        {
+            return View();
+        }
+
         public IActionResult Plus(int cartId)
         {
             var currentCart = _unitOfWork.ShoppingCart
