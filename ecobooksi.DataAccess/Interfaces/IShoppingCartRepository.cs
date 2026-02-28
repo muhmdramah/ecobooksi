@@ -9,5 +9,6 @@ namespace ecobooksi.DataAccess.Interfaces
 {
     public interface IShoppingCartRepository : IGenericRepository<ShoppingCart>
     {
+        public void Update(ShoppingCart product);
     }
 }
