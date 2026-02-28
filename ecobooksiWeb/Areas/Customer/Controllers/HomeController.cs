@@ -57,13 +57,12 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
             {
                 currentCart.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(currentCart);
-                _unitOfWork.Complete();
             }
             else
             {
                 await _unitOfWork.ShoppingCart.CreateAsync(shoppingCart);
-                _unitOfWork.Complete();
             }
+            _unitOfWork.Complete();
 
             return RedirectToAction(nameof(Index));
         }
