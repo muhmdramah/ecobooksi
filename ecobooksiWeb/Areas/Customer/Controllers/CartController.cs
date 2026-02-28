@@ -43,9 +43,52 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
             return View(ShoppingCartViewModel);
         }
 
+        public IActionResult Plus(int cartId)
+        {
+            var currentCart = _unitOfWork.ShoppingCart
+                .Get(filter: cart => cart.ShoppingCartId == cartId);
+
+            currentCart.Count += 1;
+
+            _unitOfWork.ShoppingCart.Update(currentCart);
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Minus(int cartId)
+        {
+            var currentCart = _unitOfWork.ShoppingCart
+                 .Get(filter: cart => cart.ShoppingCartId == cartId);
+
+            if (currentCart.Count <= 1)
+            {
+                await _unitOfWork.ShoppingCart.DeleteAsync(currentCart);
+            }
+            else
+            {
+                currentCart.Count -= 1;
+                _unitOfWork.ShoppingCart.Update(currentCart);
+                _unitOfWork.Complete();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Remove(int cartId)
+        {
+            var currentCart = _unitOfWork.ShoppingCart
+                 .Get(filter: cart => cart.ShoppingCartId == cartId);
+
+            await _unitOfWork.ShoppingCart.DeleteAsync(currentCart);
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
         {
-            if(shoppingCart.Count <= 50)
+            if (shoppingCart.Count <= 50)
             {
                 return shoppingCart.Product.Price;
             }
@@ -62,5 +105,5 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
             }
         }
     }
-    
+
 }
