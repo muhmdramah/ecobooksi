@@ -7,6 +7,7 @@ namespace ecobooksi.DataAccess.Interfaces
         public IGenericRepository<Category> Category { get; }
         public IProductRepository Product { get; }
         public ICompanyRepository Company { get; }
+        public IShoppingCartRepository ShoppingCart { get; }
         int Complete();
     }
 }
