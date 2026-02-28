@@ -25,10 +25,16 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
 
         public IActionResult Details(int productId)
         {
-            Product product = _unitOfWork.Product
-                .Get(product => product.ProductId == productId, "Category");
+            ShoppingCart shoppingCart = new ShoppingCart()
+            {
+                Product = _unitOfWork.Product
+                    .Get(product => product.ProductId == productId, "Category"),
+                
+                Count = 1,
+                ProductId = productId
+            };
 
-            return View(product);
+            return View(shoppingCart);
         }
 
 
