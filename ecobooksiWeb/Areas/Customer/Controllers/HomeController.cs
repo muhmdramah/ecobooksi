@@ -1,7 +1,9 @@
 using ecobooksi.DataAccess.Interfaces;
 using ecobooksi.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ecobooksi.Web.Areas.Customer.Controllers
 {
@@ -23,6 +25,7 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
             return View(products);
         }
 
+        [HttpGet]
         public IActionResult Details(int productId)
         {
             ShoppingCart shoppingCart = new ShoppingCart()
@@ -36,6 +39,22 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
 
             return View(shoppingCart);
         }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            shoppingCart.ApplicationUserId = userId;
+
+            _unitOfWork.ShoppingCart.CreateAsync(shoppingCart);
+            _unitOfWork.Complete();
+            
+            return RedirectToAction(nameof(Index));
+        }
+
 
 
         public IActionResult Privacy()
