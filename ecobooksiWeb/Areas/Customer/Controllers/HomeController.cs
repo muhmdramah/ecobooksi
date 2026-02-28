@@ -42,16 +42,29 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Details(ShoppingCart shoppingCart)
+        public async Task<IActionResult> Details(ShoppingCart shoppingCart)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             shoppingCart.ApplicationUserId = userId;
 
-            _unitOfWork.ShoppingCart.CreateAsync(shoppingCart);
-            _unitOfWork.Complete();
-            
+            var currentCart = _unitOfWork.ShoppingCart
+                    .Get(cart => cart.ApplicationUserId == shoppingCart.ApplicationUserId
+                        && cart.ProductId == shoppingCart.ProductId);
+
+            if(currentCart is not null)
+            {
+                currentCart.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(currentCart);
+                _unitOfWork.Complete();
+            }
+            else
+            {
+                await _unitOfWork.ShoppingCart.CreateAsync(shoppingCart);
+                _unitOfWork.Complete();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
