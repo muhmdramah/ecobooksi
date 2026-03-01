@@ -12,11 +12,17 @@ namespace ecobooksi.DataAccess.Repositories
         public IProductRepository Product { get; private set; }
         public ICompanyRepository Company { get; private set; }
 
+        public IOrderHeaderRepository OrderHeader { get; private set; }
+
+        public IOrderDetailRepository OrderDetail { get; private set; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
             Category = new GenericRepository<Category>(context);
             Product = new ProductRepository(context);
             Company = new CompanyRepository(context);
+            OrderHeader = new OrderHeaderRepository(context);
+            OrderDetail = new OrderDetailRepository(context);
             _context = context;
         }
 
