@@ -30,14 +30,16 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
             ShoppingCartViewModel = new()
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart
-                    .GetAll(user => user.ApplicationUserId == userId, "Product"),
+                    .GetAll(user => user.ApplicationUserId == userId,
+                    "Product"),
+                OrderHeader = new()
             };
 
             foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart);
 
-                ShoppingCartViewModel.OrderTotal += (cart.Price * cart.Count);
+                ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
 
             return View(ShoppingCartViewModel);
@@ -45,7 +47,37 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
 
         public IActionResult Summary()
         {
-            return View();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            ShoppingCartViewModel = new()
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart
+                    .GetAll(user => user.ApplicationUserId == userId,
+                    "Product"),
+                OrderHeader = new()
+            };
+
+            ShoppingCartViewModel.OrderHeader.ApplicationUser =
+                _unitOfWork.ApplicationUser.Get(user => user.Id == userId);
+
+            ShoppingCartViewModel.OrderHeader.Name = ShoppingCartViewModel.OrderHeader.ApplicationUser.Name;
+            ShoppingCartViewModel.OrderHeader.PhoneNumber = ShoppingCartViewModel.OrderHeader.ApplicationUser.PhoneNumber;
+            ShoppingCartViewModel.OrderHeader.StreetAddress = ShoppingCartViewModel.OrderHeader.ApplicationUser.StreetAddress;
+            ShoppingCartViewModel.OrderHeader.City = ShoppingCartViewModel.OrderHeader.ApplicationUser.City;
+            ShoppingCartViewModel.OrderHeader.State = ShoppingCartViewModel.OrderHeader.ApplicationUser.State;
+            ShoppingCartViewModel.OrderHeader.PostalCode = ShoppingCartViewModel.OrderHeader.ApplicationUser.PostalCode;    
+
+
+            foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart);
+
+                ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+            }
+
+            return View(ShoppingCartViewModel);
         }
 
         public IActionResult Plus(int cartId)
