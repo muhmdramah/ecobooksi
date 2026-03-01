@@ -14,19 +14,6 @@
             public IShoppingCartRepository ShoppingCart { get; private set; }
             public IApplicationUserRepository ApplicationUser { get; private set; }
 
-        public IOrderHeaderRepository OrderHeader { get; private set; }
-
-        public IOrderDetailRepository OrderDetail { get; private set; }
-
-        public UnitOfWork(ApplicationDbContext context)
-        {
-            Category = new GenericRepository<Category>(context);
-            Product = new ProductRepository(context);
-            Company = new CompanyRepository(context);
-            OrderHeader = new OrderHeaderRepository(context);
-            OrderDetail = new OrderDetailRepository(context);
-            _context = context;
-        }
             public UnitOfWork(ApplicationDbContext context)
             {
                 Category = new GenericRepository<Category>(context);
@@ -34,7 +21,11 @@
                 Company = new CompanyRepository(context);
                 ShoppingCart = new ShoppingCartRepository(context);
                 ApplicationUser = new ApplicationUserRepository(context);
-                _context = context;
+
+                OrderHeader = new OrderHeaderRepository(context);
+                OrderDetail = new OrderDetailRepository(context);
+
+            _context = context;
             }
 
             public int Complete()
