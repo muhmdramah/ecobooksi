@@ -13,9 +13,14 @@ namespace ecobooksi.DataAccess.Repositories
             _context = context;
         }
 
-        public  ICollection<T> GetAll(string? includeProperty = null)
+        public  ICollection<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperty = null)
         {
             IQueryable<T> query = _context.Set<T>();
+
+            if(filter is not null)
+            {
+                query = query.Where(filter);
+            }
 
             //query = query.Include(includeProperty);
 
@@ -31,9 +36,20 @@ namespace ecobooksi.DataAccess.Repositories
             return  query.ToList();
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperty = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperty = null,
+             bool tracked = false)
         {
             IQueryable<T> query = _context.Set<T>();
+
+            if (tracked == false)
+            {
+                query = query.AsNoTracking();
+            }
+            else
+            {
+                query = query.AsTracking();
+            }
+
             query = query.Where(filter);
 
             if (!string.IsNullOrEmpty(includeProperty))
@@ -44,7 +60,6 @@ namespace ecobooksi.DataAccess.Repositories
                     query = query.Include(property);
                 }
             }
-
             return query.FirstOrDefault();
         }
 

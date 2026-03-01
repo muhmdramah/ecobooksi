@@ -1,7 +1,9 @@
 using ecobooksi.DataAccess.Interfaces;
 using ecobooksi.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ecobooksi.Web.Areas.Customer.Controllers
 {
@@ -19,17 +21,52 @@ namespace ecobooksi.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> products = _unitOfWork.Product.GetAll("Category");
+            IEnumerable<Product> products = _unitOfWork.Product.GetAll(includeProperty: "Category");
             return View(products);
         }
 
+        [HttpGet]
         public IActionResult Details(int productId)
         {
-            Product product = _unitOfWork.Product
-                .Get(product => product.ProductId == productId, "Category");
+            ShoppingCart shoppingCart = new ShoppingCart()
+            {
+                Product = _unitOfWork.Product
+                    .Get(product => product.ProductId == productId, "Category"),
+                
+                Count = 1,
+                ProductId = productId
+            };
 
-            return View(product);
+            return View(shoppingCart);
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Details(ShoppingCart shoppingCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            shoppingCart.ApplicationUserId = userId;
+
+            var currentCart = _unitOfWork.ShoppingCart
+                    .Get(cart => cart.ApplicationUserId == shoppingCart.ApplicationUserId
+                        && cart.ProductId == shoppingCart.ProductId);
+
+            if(currentCart is not null)
+            {
+                currentCart.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(currentCart);
+            }
+            else
+            {
+                await _unitOfWork.ShoppingCart.CreateAsync(shoppingCart);
+            }
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
 
         public IActionResult Privacy()
